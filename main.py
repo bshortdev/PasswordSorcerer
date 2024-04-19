@@ -1,3 +1,5 @@
+import random
+import string
 import customtkinter 
 
 customtkinter.set_appearance_mode('dark')
@@ -8,7 +10,29 @@ root.title("Password Sorcerer")
 root.geometry("500x400")
 
 def generate_password(length, has_lowercase_letters, has_uppercase_letters, has_numbers, has_special_characters):
-    generated_password.set("testpassword")
+    password_placeholder = []
+    if(has_lowercase_letters.get()):
+        password_placeholder.append(random.choice(string.ascii_lowercase))
+    if(has_uppercase_letters.get()):
+        password_placeholder.append(random.choice(string.ascii_uppercase))
+    if(has_numbers.get()):
+        password_placeholder.append(random.choice(string.digits))
+    if(has_special_characters.get()):
+        password_placeholder.append(random.choice(string.punctuation))
+    loop_range = range(length.get()-len(password_placeholder))
+    for n in loop_range:
+        type_of_character = random.randint(0,3)
+        # BUG: Need to account for selection variables here
+        if type_of_character == 0:
+            password_placeholder.append(random.choice(string.ascii_lowercase))
+        elif type_of_character == 1:
+            password_placeholder.append(random.choice(string.ascii_uppercase))
+        elif type_of_character == 2:
+            password_placeholder.append(random.choice(string.digits))
+        else:
+            password_placeholder.append(random.choice(string.punctuation))
+
+    generated_password.set("".join(password_placeholder))
 
 
 frame = customtkinter.CTkFrame(master = root)
