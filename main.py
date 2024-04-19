@@ -11,18 +11,22 @@ root.geometry("500x400")
 
 def generate_password(length, has_lowercase_letters, has_uppercase_letters, has_numbers, has_special_characters):
     password_placeholder = []
+    character_types_to_include = []
     if(has_lowercase_letters.get()):
         password_placeholder.append(random.choice(string.ascii_lowercase))
+        character_types_to_include.append(0)
     if(has_uppercase_letters.get()):
         password_placeholder.append(random.choice(string.ascii_uppercase))
+        character_types_to_include.append(1)
     if(has_numbers.get()):
         password_placeholder.append(random.choice(string.digits))
+        character_types_to_include.append(2)
     if(has_special_characters.get()):
         password_placeholder.append(random.choice(string.punctuation))
+        character_types_to_include.append(3)
     loop_range = range(length.get()-len(password_placeholder))
     for n in loop_range:
-        type_of_character = random.randint(0,3)
-        # BUG: Need to account for selection variables here
+        type_of_character = character_types_to_include[random.randint(0, len(character_types_to_include)-1)]
         if type_of_character == 0:
             password_placeholder.append(random.choice(string.ascii_lowercase))
         elif type_of_character == 1:
@@ -53,7 +57,8 @@ label.grid(row=0,column=0, sticky="ew", columnspan=4, pady=(10,0))
 length_label = customtkinter.CTkLabel(master=frame, text="Password Length")
 length_label.grid(row=1,column=0, sticky="ew", columnspan=4, pady=(20,0))
 
-length_slider = customtkinter.CTkSlider(master=frame, from_=4, to=36, number_of_steps=32,variable=password_length)
+max_password_length = 128
+length_slider = customtkinter.CTkSlider(master=frame, from_=4, to=max_password_length, number_of_steps=max_password_length-4,variable=password_length)
 length_slider.grid(row=2,column=0, sticky="ew",columnspan=4, padx=(20, 80), pady=(0,20))
 
 length_entry = customtkinter.CTkEntry(master=frame, textvariable=password_length, width=50)
