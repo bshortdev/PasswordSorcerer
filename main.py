@@ -1,7 +1,6 @@
-import random
-import string
 import customtkinter 
 from password import generate_password
+from pyperclip import copy
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
@@ -13,6 +12,10 @@ root.geometry("500x400")
 def set_random_password(length, has_lowercase_letters, has_uppercase_letters, has_numbers, has_special_characters):
     generated_password.set(generate_password(length, has_lowercase_letters.get(), has_uppercase_letters.get(), has_numbers.get(), has_special_characters.get()))
     
+
+def copy_to_clipboard(password_to_copy):
+    copy(password_to_copy.get())
+
 
 frame = customtkinter.CTkFrame(master = root)
 frame.pack(pady=20, padx=60, fill="both", expand=True)
@@ -54,8 +57,9 @@ special_characters_checkbox.grid(row=4,column=2, sticky="ew", columnspan=2, pady
 button = customtkinter.CTkButton(master=frame, text="Generate Password", command=lambda : set_random_password(password_length, is_lowercase_letters_checked, is_uppercase_letters_checked, is_numbers_checked, is_special_characters_checked))
 button.grid(row=5,column=0, columnspan=4, pady=(20, 0))
 
-# Show password with icon to copy the text to clipboard.
-generated_password_label = customtkinter.CTkLabel(master=frame, textvariable=generated_password)
-generated_password_label.grid(row=6,column=0, sticky="ew", columnspan=4, pady=(30,0))
+generated_password_entry = customtkinter.CTkEntry(master=frame, textvariable=generated_password, state="disabled")
+generated_password_entry.grid(row=6,column=0, sticky="ew", columnspan=4, padx=(20,80), pady=(30,0))
 
+button = customtkinter.CTkButton(master=frame, text="Copy", width=50, command=lambda : copy_to_clipboard(generated_password))
+button.grid(row=6,column=3, columnspan=1, padx=20, pady=(30, 0), sticky="e")
 root.mainloop()
