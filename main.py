@@ -11,10 +11,12 @@ root.geometry("500x400")
 
 def set_random_password(length, has_lowercase_letters, has_uppercase_letters, has_numbers, has_special_characters):
     generated_password.set(generate_password(length, has_lowercase_letters.get(), has_uppercase_letters.get(), has_numbers.get(), has_special_characters.get()))
+    copy_button.configure(state='normal')
     
 
 def copy_to_clipboard(password_to_copy):
     copy(password_to_copy.get())
+    copy_button.configure(text='Copied!')
 
 
 frame = customtkinter.CTkFrame(master = root)
@@ -22,7 +24,7 @@ frame.pack(pady=20, padx=60, fill="both", expand=True)
 
 frame.grid_columnconfigure(0, weight=1)
 
-password_length = customtkinter.IntVar(master=frame, value = 4)
+password_length = customtkinter.IntVar(master=frame, value = 15)
 generated_password = customtkinter.StringVar(master=frame, value='')
 is_lowercase_letters_checked = customtkinter.BooleanVar(master=frame, value=True)
 is_uppercase_letters_checked = customtkinter.BooleanVar(master=frame, value=True)
@@ -54,12 +56,12 @@ numbers_checkbox.grid(row=4,column=0, sticky="ew", columnspan=2, pady=(0,20), pa
 special_characters_checkbox = customtkinter.CTkCheckBox(master=frame, text="Special Characters?", variable=is_special_characters_checked)
 special_characters_checkbox.grid(row=4,column=2, sticky="ew", columnspan=2, pady=(0,20), padx=20)
 
-button = customtkinter.CTkButton(master=frame, text="Generate Password", command=lambda : set_random_password(password_length, is_lowercase_letters_checked, is_uppercase_letters_checked, is_numbers_checked, is_special_characters_checked))
-button.grid(row=5,column=0, columnspan=4, pady=(20, 0))
+generate_button = customtkinter.CTkButton(master=frame, text="Generate Password", command=lambda : set_random_password(password_length, is_lowercase_letters_checked, is_uppercase_letters_checked, is_numbers_checked, is_special_characters_checked))
+generate_button.grid(row=5,column=0, columnspan=4, pady=(20, 0))
 
 generated_password_entry = customtkinter.CTkEntry(master=frame, textvariable=generated_password, state="disabled")
 generated_password_entry.grid(row=6,column=0, sticky="ew", columnspan=4, padx=(20,80), pady=(30,0))
 
-button = customtkinter.CTkButton(master=frame, text="Copy", width=50, command=lambda : copy_to_clipboard(generated_password))
-button.grid(row=6,column=3, columnspan=1, padx=20, pady=(30, 0), sticky="e")
+copy_button = customtkinter.CTkButton(master=frame, text="Copy", width=50, state="disabled", command=lambda : copy_to_clipboard(generated_password))
+copy_button.grid(row=6,column=3, columnspan=1, padx=20, pady=(30, 0), sticky="e")
 root.mainloop()
